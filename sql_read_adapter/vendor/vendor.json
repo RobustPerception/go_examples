@@ -144,7 +144,7 @@
 			"revisionTime": "2017-04-04T13:54:30Z"
 		},
 		{
-			"checksumSHA1": "c3IHjjpJXosottHT9o87GZyVQss=",
+			"checksumSHA1": "S3MP1PsMgZ3fnNAVBJNlr7ak7Ro=",
 			"path": "github.com/prometheus/prometheus/storage/remote",
 			"revision": "5f3327f620e3fd29bfc3770acd68d679d165d49c",
 			"revisionTime": "2017-04-04T13:54:30Z"

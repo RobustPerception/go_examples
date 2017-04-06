@@ -95,6 +95,7 @@ func runQuery(q *remote.Query, db *sql.DB) []*remote.TimeSeries {
 		}
 		resp = append(resp, ts)
 	}
+	log.Infof("Returned %d time series.", len(resp))
 
 	return resp
 }
@@ -142,8 +143,11 @@ func main() {
 			return
 		}
 
-		resp := remote.ReadResponse{}
-		resp.Timeseries = runQuery(req.Queries[0], db)
+		resp := remote.ReadResponse{
+			Responses: []*remote.QueryResponse{
+				{Timeseries: runQuery(req.Queries[0], db)},
+			},
+		}
 		data, err := proto.Marshal(&resp)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
