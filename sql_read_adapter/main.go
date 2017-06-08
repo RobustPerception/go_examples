@@ -126,7 +126,13 @@ func main() {
 	log.Info("Database opened and setup.")
 
 	http.HandleFunc("/read", func(w http.ResponseWriter, r *http.Request) {
-		reqBuf, err := ioutil.ReadAll(snappy.NewReader(r.Body))
+		compressed, err := ioutil.ReadAll(r.Body)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		reqBuf, err := snappy.Decode(nil, compressed)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -155,7 +161,7 @@ func main() {
 		}
 
 		w.Header().Set("Content-Type", "application/x-protobuf")
-		if _, err := snappy.NewWriter(w).Write(data); err != nil {
+		if _, err := w.Write(snappy.Encode(nil, data)); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
